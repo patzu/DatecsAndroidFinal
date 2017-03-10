@@ -161,6 +161,14 @@ public class PrinterActivity extends Activity {
             }
         });
 
+        findViewById(R.id.btn_print_imageText).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                printImageText();
+            }
+        });
+
+
         findViewById(R.id.btn_print_page).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1230,9 +1238,117 @@ public class PrinterActivity extends Activity {
                 bitmap.recycle();
 
                 printer.reset();
-                printer.printCompressedImage(argb, width, height, Printer.ALIGN_CENTER, true);
+                printer.printImage(argb, width, height, Printer.ALIGN_CENTER, true);
                 printer.feedPaper(110);
                 printer.flush();
+            }
+        }, R.string.msg_printing_image);
+    }
+    private void printImageText() {
+        Log.d(LOG_TAG, "Print Image");
+
+        runTask(new PrinterRunnable() {
+            @Override
+            public void run(ProgressDialog dialog, Printer printer) throws IOException {
+                DatecsWrapper wrapper = new DatecsWrapper(printer, DatecsWrapper.PrinterType.DPP450);
+
+                for(int i=0 ;i< 5 ; i++) {
+                    final BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inScaled = false;
+
+                    final AssetManager assetManager = getApplicationContext().getAssets();
+                    final Bitmap bitmap = BitmapFactory.decodeStream(assetManager.open("text1.png"),
+                            null, options);
+                    final int width = bitmap.getWidth();
+                    final int height = bitmap.getHeight();
+                    final int[] argb = new int[width * height];
+                    bitmap.getPixels(argb, 0, width, 0, 0, width, height);
+                    //bitmap.recycle();
+
+                    printer.reset();
+                    printer.printImage(argb, width, height, Printer.ALIGN_CENTER, false);
+                    printer.feedPaper(20);
+
+                    wrapper.printPersianText("نماینده انحصاری عالی فرد، شیوا، نستله و ردبول");
+                    printer.feedPaper(20);
+
+                    ///////////////////////////
+
+                    final AssetManager assetManager2 = getApplicationContext().getAssets();
+                    final Bitmap bitmap2 = BitmapFactory.decodeStream(assetManager2.open("text2.png"),
+                            null, options);
+                    final int width2 = bitmap2.getWidth();
+                    final int height2 = bitmap2.getHeight();
+                    final int[] argb2 = new int[width2 * height2];
+                    bitmap2.getPixels(argb2, 0, width2, 0, 0, width2, height2);
+                    //bitmap.recycle();
+
+                    printer.reset();
+                    printer.printImage(argb2, width2, height2, Printer.ALIGN_CENTER, false);
+                    printer.feedPaper(20);
+
+                    //////////////////////
+                    ///////////////////////////
+
+                    wrapper.printPersianText("کیلومتر 20 جاده قدیم کرج-شهر قدس-بلوار انقلاب-خیابان شهید فصیحی- روبروی اداره کل آموزش و پرورش-شرکت پخش سایه سمن");
+                    printer.feedPaper(20);
+                    ///////////////////////////
+
+                    final AssetManager assetManager3 = getApplicationContext().getAssets();
+                    final Bitmap bitmap3 = BitmapFactory.decodeStream(assetManager3.open("text3.png"),
+                            null, options);
+                    final int width3 = bitmap3.getWidth();
+                    final int height3 = bitmap3.getHeight();
+                    final int[] argb3 = new int[width3 * height3];
+                    bitmap3.getPixels(argb3, 0, width3, 0, 0, width3, height3);
+                    //bitmap.recycle();
+
+                    printer.reset();
+                    printer.printImage(argb3, width3, height3, Printer.ALIGN_CENTER, false);
+                    printer.feedPaper(40);
+//////////
+                    wrapper.printPersianText("مجموع مبلغ قابل پرداخت: 203،5807");
+                    printer.feedPaper(30);
+
+
+                    ////////////
+                    final BitmapFactory.Options options4 = new BitmapFactory.Options();
+                    options4.inScaled = false;
+
+                    final AssetManager assetManager4 = getApplicationContext().getAssets();
+                    final Bitmap bitmap4 = BitmapFactory.decodeStream(assetManager4.open("text4.png"),
+                            null, options);
+                    final int width4 = bitmap4.getWidth();
+                    final int height4 = bitmap4.getHeight();
+                    final int[] argb4 = new int[width4 * height4];
+                    bitmap4.getPixels(argb4, 0, width4, 0, 0, width4, height4);
+                    // bitmap.recycle();
+
+                    printer.reset();
+                    printer.printCompressedImage(argb4, width4, height4, Printer.ALIGN_CENTER, false);
+                    printer.feedPaper(20);
+///////////////////////////
+                    final BitmapFactory.Options options5 = new BitmapFactory.Options();
+                    options5.inScaled = false;
+
+                    final AssetManager assetManager5 = getApplicationContext().getAssets();
+                    final Bitmap bitmap5 = BitmapFactory.decodeStream(assetManager5.open("text2.png"),
+                            null, options);
+                    final int width5 = bitmap5.getWidth();
+                    final int height5 = bitmap5.getHeight();
+                    final int[] argb5 = new int[width5 * height5];
+                    bitmap5.getPixels(argb5, 0, width5, 0, 0, width5, height5);
+                    bitmap.recycle();
+
+                    printer.reset();
+                    printer.printCompressedImage(argb5, width5, height5, Printer.ALIGN_CENTER, false);
+                    printer.feedPaper(50);
+                    printer.flush();
+                    printer.printText("-----------------------" + i );
+
+                }
+                //////////////////////
+
             }
         }, R.string.msg_printing_image);
     }
@@ -1254,7 +1370,7 @@ public class PrinterActivity extends Activity {
                 printer.reset();
                 printer.selectPageMode();
 
-                printer.setPageRegion(0, 0, 160, 320, Printer.PAGE_LEFT);
+                printer.setPageRegion(0, 0, 160, 420, Printer.PAGE_LEFT);
                 printer.setPageXY(0, 4);
                 printer.printTaggedText("{reset}{center}{b}PARAGRAPH I{br}");
                 printer.drawPageRectangle(0, 0, 160, 32, Printer.FILL_INVERTED);

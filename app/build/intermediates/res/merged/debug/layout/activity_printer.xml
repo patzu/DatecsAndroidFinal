@@ -73,7 +73,9 @@
          />
 
 </LinearLayout>
-
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
                     <Button
                         android:id="@+id/btn_print_image"
                         android:layout_width="match_parent"
@@ -81,8 +83,19 @@
                         android:drawableLeft="@drawable/ic_image"
                         android:text="@string/title_print_image"
                         android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:layout_weight="1"
 
+                        android:textStyle="bold" />
+    <Button
+        android:id="@+id/btn_print_imageText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_image"
+        android:text="Text Image"
+        android:textSize="24sp"
+        android:layout_weight="1"
+        android:textStyle="bold" />
+</LinearLayout>
                     <Button
                         android:id="@+id/btn_print_page"
                         android:layout_width="match_parent"
@@ -91,6 +104,7 @@
                         android:text="@string/title_print_page"
                         android:textSize="24sp"
                         android:textStyle="bold" />
+
 
                     <Button
                         android:id="@+id/btn_print_barcode"

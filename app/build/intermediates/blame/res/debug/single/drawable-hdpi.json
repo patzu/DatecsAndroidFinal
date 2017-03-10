@@ -28,12 +28,12 @@
         "source": "E:\\PersianBank\\Delfani\\DatecsAndroid\\app\\src\\main\\res\\drawable-hdpi\\ic_self_test.png"
     },
     {
-        "merged": "E:\\PersianBank\\Delfani\\DatecsAndroid\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\ic_read_barcode.png",
-        "source": "E:\\PersianBank\\Delfani\\DatecsAndroid\\app\\src\\main\\res\\drawable-hdpi\\ic_read_barcode.png"
-    },
-    {
         "merged": "E:\\PersianBank\\Delfani\\DatecsAndroid\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\ic_barcode.png",
         "source": "E:\\PersianBank\\Delfani\\DatecsAndroid\\app\\src\\main\\res\\drawable-hdpi\\ic_barcode.png"
+    },
+    {
+        "merged": "E:\\PersianBank\\Delfani\\DatecsAndroid\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\ic_read_barcode.png",
+        "source": "E:\\PersianBank\\Delfani\\DatecsAndroid\\app\\src\\main\\res\\drawable-hdpi\\ic_read_barcode.png"
     },
     {
         "merged": "E:\\PersianBank\\Delfani\\DatecsAndroid\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\ic_bluetooth_paired.png",

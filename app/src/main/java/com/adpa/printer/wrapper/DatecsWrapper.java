@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * Created by Davoud on 1/25/2017.
  */
 
-public class DatecsWrapper {
+public class DatecsWrapper{
 
     private List<DatecsStyle> stringStyle;
 
@@ -52,6 +52,13 @@ public class DatecsWrapper {
 
     private static Printer printer;
 
+//    public DatecsWrapper(InputStream in, OutputStream out, PrinterType printerType) throws IOException{
+//        super(in,out);
+//        DatecsWrapper.printerType = printerType;
+//        stringStyle = new ArrayList<>();
+//        stringStyle.add(DatecsStyle.RESET);
+//    }
+
     public DatecsWrapper(Printer p, PrinterType printerType) {
         printer = p;
         DatecsWrapper.printerType = printerType;
@@ -60,21 +67,23 @@ public class DatecsWrapper {
     }
 
     public void printPersianText(String text) throws IOException {
-        PersianFormatter formatter = new DatecPersianFormatterUtil();
-        String result = formatter.persianFormatter(text);
-        result = wrapString(result, printerType);
-        printer.printArabicText(24, result);
+        synchronized (printer) {
+            PersianFormatter formatter = new DatecPersianFormatterUtil();
+            String result = formatter.persianFormatter(text);
+            result = wrapString(result, printerType);
+            printer.printArabicText(24, result);
+        }
     }
 
     public void printPersianText(String text, List<DatecsStyle> styles) throws IOException {
-        setPrinterStyle(styles);
-
-        PersianFormatter formatter = new DatecPersianFormatterUtil();
-        String result = formatter.persianFormatter(text);
-        result = wrapString(result, printerType);
-        printer.printArabicText(24, result);
+        synchronized (printer) {
+            setPrinterStyle(styles);
+            PersianFormatter formatter = new DatecPersianFormatterUtil();
+            String result = formatter.persianFormatter(text);
+            result = wrapString(result, printerType);
+            printer.printArabicText(24, result);
+        }
     }
-
 
     public String wrapString(String string, PrinterType printerType) {
         int charWrap = 0;
