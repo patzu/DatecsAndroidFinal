@@ -11,6 +11,10 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
@@ -1244,6 +1248,7 @@ public class PrinterActivity extends Activity {
             }
         }, R.string.msg_printing_image);
     }
+
     private void printImageText() {
         Log.d(LOG_TAG, "Print Image");
 
@@ -1252,13 +1257,14 @@ public class PrinterActivity extends Activity {
             public void run(ProgressDialog dialog, Printer printer) throws IOException {
                 DatecsWrapper wrapper = new DatecsWrapper(printer, DatecsWrapper.PrinterType.DPP450);
 
-                for(int i=0 ;i< 5 ; i++) {
                     final BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inScaled = false;
 
                     final AssetManager assetManager = getApplicationContext().getAssets();
                     final Bitmap bitmap = BitmapFactory.decodeStream(assetManager.open("text1.png"),
                             null, options);
+                    changeBitmapContrastBrightness(bitmap,1.5f,1f);
+
                     final int width = bitmap.getWidth();
                     final int height = bitmap.getHeight();
                     final int[] argb = new int[width * height];
@@ -1277,7 +1283,8 @@ public class PrinterActivity extends Activity {
                     final AssetManager assetManager2 = getApplicationContext().getAssets();
                     final Bitmap bitmap2 = BitmapFactory.decodeStream(assetManager2.open("text2.png"),
                             null, options);
-                    final int width2 = bitmap2.getWidth();
+                changeBitmapContrastBrightness(bitmap2,1.5f,1f);
+                final int width2 = bitmap2.getWidth();
                     final int height2 = bitmap2.getHeight();
                     final int[] argb2 = new int[width2 * height2];
                     bitmap2.getPixels(argb2, 0, width2, 0, 0, width2, height2);
@@ -1297,7 +1304,9 @@ public class PrinterActivity extends Activity {
                     final AssetManager assetManager3 = getApplicationContext().getAssets();
                     final Bitmap bitmap3 = BitmapFactory.decodeStream(assetManager3.open("text3.png"),
                             null, options);
-                    final int width3 = bitmap3.getWidth();
+                changeBitmapContrastBrightness(bitmap3,1.5f,1f);
+
+                final int width3 = bitmap3.getWidth();
                     final int height3 = bitmap3.getHeight();
                     final int[] argb3 = new int[width3 * height3];
                     bitmap3.getPixels(argb3, 0, width3, 0, 0, width3, height3);
@@ -1318,7 +1327,9 @@ public class PrinterActivity extends Activity {
                     final AssetManager assetManager4 = getApplicationContext().getAssets();
                     final Bitmap bitmap4 = BitmapFactory.decodeStream(assetManager4.open("text4.png"),
                             null, options);
-                    final int width4 = bitmap4.getWidth();
+                changeBitmapContrastBrightness(bitmap4,1.5f,1f);
+
+                final int width4 = bitmap4.getWidth();
                     final int height4 = bitmap4.getHeight();
                     final int[] argb4 = new int[width4 * height4];
                     bitmap4.getPixels(argb4, 0, width4, 0, 0, width4, height4);
@@ -1334,7 +1345,9 @@ public class PrinterActivity extends Activity {
                     final AssetManager assetManager5 = getApplicationContext().getAssets();
                     final Bitmap bitmap5 = BitmapFactory.decodeStream(assetManager5.open("text2.png"),
                             null, options);
-                    final int width5 = bitmap5.getWidth();
+                changeBitmapContrastBrightness(bitmap5,1.5f,1f);
+
+                final int width5 = bitmap5.getWidth();
                     final int height5 = bitmap5.getHeight();
                     final int[] argb5 = new int[width5 * height5];
                     bitmap5.getPixels(argb5, 0, width5, 0, 0, width5, height5);
@@ -1344,13 +1357,32 @@ public class PrinterActivity extends Activity {
                     printer.printCompressedImage(argb5, width5, height5, Printer.ALIGN_CENTER, false);
                     printer.feedPaper(50);
                     printer.flush();
-                    printer.printText("-----------------------" + i );
 
-                }
+
                 //////////////////////
 
             }
         }, R.string.msg_printing_image);
+    }
+
+    public static Bitmap changeBitmapContrastBrightness(Bitmap bmp, float contrast, float brightness) {
+        ColorMatrix cm = new ColorMatrix(new float[]
+                {
+                        contrast, 0, 0, 0, brightness,
+                        0, contrast, 0, 0, brightness,
+                        0, 0, contrast, 0, brightness,
+                        0, 0, 0, 1, 0
+                });
+
+        Bitmap ret = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), bmp.getConfig());
+
+        Canvas canvas = new Canvas(ret);
+
+        Paint paint = new Paint();
+        paint.setColorFilter(new ColorMatrixColorFilter(cm));
+        canvas.drawBitmap(bmp, 0, 0, paint);
+
+        return ret;
     }
 
     private void printPage() {
